@@ -15,10 +15,29 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   double balance = 0;
 
-  void addMoney() {
+  void addMoney() async {
     setState(() {
       balance = balance + 500;
     });
+
+    // Obtain shared preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Save an double value to 'decimal' key.
+    await prefs.setDouble('balance', balance);
+  }
+
+  void loadBalance() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Save an double value to 'decimal' key.
+    setState(() {
+      balance = prefs.getDouble('balance') ?? 0;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadBalance();
   }
 
   @override
@@ -41,9 +60,26 @@ class _MyAppState extends State<MyApp> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Bank Balance"),
+                    Text(
+                      "Bank Balance",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
                     SizedBox(height: 20),
-                    Text('$balance'),
+                    Text(
+                      '$balance',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    // SizedBox(height: 10),
+                    // OutlinedButton(
+                    //   onPressed: loadBalance,
+                    //   child: Text('Load Balance'),
+                    // ),
                   ],
                 ),
               ),
@@ -57,7 +93,10 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () {
                     addMoney();
                   },
-                  child: Text('Add Money'),
+                  child: Text(
+                    'Add Money',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ),
               ),
             ],
