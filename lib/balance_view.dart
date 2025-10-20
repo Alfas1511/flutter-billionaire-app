@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BalanceView extends StatelessWidget {
   final double balance;
@@ -17,7 +18,7 @@ class BalanceView extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            '$balance',
+            '${NumberFormat.simpleCurrency().format(balance)}',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           // SizedBox(height: 10),
